@@ -75,6 +75,10 @@ public class JudokaService {
         return opt.isPresent() && opt.get().getPassword().equals(password);
     }
 
+    public Optional<Judoka> findById(Long id) {
+        return judokaRepository.findById(id); //
+    }
+
     /**
      * Buscar por ids list.
      *
