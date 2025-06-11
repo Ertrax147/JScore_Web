@@ -17,7 +17,7 @@ public class JudokaTest {
 
     @BeforeEach
     void setUp() {
-        atleta = new Judoka(1, "Jigoro", "Kano", "66kg", "2004-05-12");
+        atleta = new Judoka(1, "Jigoro", "Kano", "66kg", "1970-05-12");
     }
 
     @Test
@@ -25,11 +25,23 @@ public class JudokaTest {
         atleta.aumentarVictoria();
         assertEquals(1, atleta.getVictorias());
     }
-
     @Test
     void testAumentarDerrota() {
         atleta.aumentarDerrota();
         assertEquals(1, atleta.getDerrotas());
+    }
+
+    @Test
+    void testCalcularPorcentajeVictorias_ConDatosMezclados() {
+        //Crear un judoka con un historial de combates.
+        Judoka judoka = new Judoka();
+        judoka.setVictorias(1);
+        judoka.setDerrotas(1);
+        judoka.setEmpates(2); // Total de 4 combates
+        // Calcular el porcentaje de victorias.
+        double porcentaje = judoka.calcularPorcentajeVictorias();
+        //Verificar que el resultado es el esperado (1 de 4 es 25%).
+        assertEquals(25.0, porcentaje, 0.01, "El porcentaje de victorias debería ser 25.0%");
     }
 
     @Test
@@ -40,21 +52,6 @@ public class JudokaTest {
         assertTrue(info.contains("Categoria: 66kg"));
         assertTrue(info.contains("Victorias: 1"));
         assertTrue(info.contains("% Victorias: 100.00"));
-    }
-
-    @Test
-    void testCalcularPorcentajeVictorias_ConDatosMezclados() {
-        // Arrange: Crear un judoka con un historial de combates.
-        Judoka judoka = new Judoka();
-        judoka.setVictorias(1);
-        judoka.setDerrotas(1);
-        judoka.setEmpates(2); // Total de 4 combates
-
-        // Act: Calcular el porcentaje de victorias.
-        double porcentaje = judoka.calcularPorcentajeVictorias();
-
-        // Assert: Verificar que el resultado es el esperado (1 de 4 es 25%).
-        assertEquals(25.0, porcentaje, 0.01, "El porcentaje de victorias debería ser 25.0%");
     }
 
     @Test

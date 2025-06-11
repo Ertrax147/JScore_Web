@@ -96,11 +96,11 @@ class AuthControllerTest {
      */
     @Test
     void testDoLoginConCredencialesValidasJudoka() {
-        when(judokaService.validarContrasena("john_doe", "password")).thenReturn(true);
+        when(judokaService.validarContrasena("jigoro", "password")).thenReturn(true);
 
-        String result = authController.doLogin("john_doe", "password", "judoka", model, session);
+        String result = authController.doLogin("jigoro", "password", "judoka", model, session);
 
-        verify(session).setAttribute("username", "john_doe");
+        verify(session).setAttribute("username", "jigoro");
         verify(session).setAttribute("tipo", "judoka");
         assertEquals("redirect:/judoka/home", result);
     }
@@ -111,9 +111,9 @@ class AuthControllerTest {
      */
     @Test
     void testDoLoginConCredencialesInvalidasJudoka() {
-        when(judokaService.validarContrasena("john_doe", "password")).thenReturn(false);
+        when(judokaService.validarContrasena("jigoro", "password")).thenReturn(false);
 
-        String result = authController.doLogin("john_doe", "password", "judoka", model, session);
+        String result = authController.doLogin("jigoro", "password", "judoka", model, session);
 
         verify(model).addAttribute("error", "Usuario o contraseña incorrectos");
         assertEquals("Model/login", result);
