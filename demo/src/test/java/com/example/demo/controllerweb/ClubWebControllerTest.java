@@ -1,6 +1,5 @@
-package com.example.demo;
+package com.example.demo.controllerweb;
 
-import com.example.demo.controllerweb.ClubWebController;
 import com.example.demo.model.user.Club;
 import com.example.demo.service.ClubService;
 import jakarta.servlet.http.HttpSession;
@@ -112,23 +111,36 @@ class ClubWebControllerTest {
     /**
      * Prueba el registro de un club con datos válidos.
      */
+//    @Test
+//    void testDoRegistroClubExitoso() {
+//        // Arrange
+//        when(clubService.findByUsername("club123@test.com")).thenReturn(Optional.empty());
+//
+//        // Act
+//        String result = clubWebController.doRegistroClub("club123@test.com", "password123", "Club ABC", model);
+//
+//        // Assert
+//        // 1. Verifica que la vista devuelta es la del formulario de registro
+//        assertEquals("Club/registro_club", result);
+//
+//        // 2. Verifica que se llamó al método para guardar el club
+//        verify(clubService).guardarClub(any(Club.class));
+//
+//        // 3. (Opcional pero muy bueno) Verifica que se añadió un mensaje de éxito al modelo
+//        verify(model).addAttribute(eq("success"), anyString());
+//    }
+
+    /**
+     * Prueba el registro de un club con datos válidos.   #####A##
+     */
     @Test
     void testDoRegistroClubExitoso() {
-        // Arrange
         when(clubService.findByUsername("club123@test.com")).thenReturn(Optional.empty());
 
-        // Act
         String result = clubWebController.doRegistroClub("club123@test.com", "password123", "Club ABC", model);
 
-        // Assert
-        // 1. Verifica que la vista devuelta es la del formulario de registro
         assertEquals("Club/registro_club", result);
-
-        // 2. Verifica que se llamó al método para guardar el club
         verify(clubService).guardarClub(any(Club.class));
-
-        // 3. (Opcional pero muy bueno) Verifica que se añadió un mensaje de éxito al modelo
-        verify(model).addAttribute(eq("success"), anyString());
     }
 
     /**

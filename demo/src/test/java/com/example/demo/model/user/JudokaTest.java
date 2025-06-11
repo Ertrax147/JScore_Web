@@ -1,7 +1,6 @@
-package com.example.demo;
+package com.example.demo.model.user;
 
 // Tipo: Prueba Unitaria
-import com.example.demo.model.user.Judoka;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
