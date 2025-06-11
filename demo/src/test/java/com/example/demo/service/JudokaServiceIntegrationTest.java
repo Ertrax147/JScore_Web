@@ -50,7 +50,7 @@ class JudokaServiceIntegrationTest {
         nuevo.setNombre("Nuevo");
         nuevo.setApellido("Atleta");
 
-        // Act
+        // Guardamos y buscamos
         judokaService.guardarJudoka(nuevo);
         Optional<Judoka> guardado = judokaService.findByUsername("nuevo.judoka@mail.com");
 
@@ -60,10 +60,22 @@ class JudokaServiceIntegrationTest {
     }
 
     @Test
+    void testEliminarJudoka() {
+        Long idDelJudoka = judokaDePrueba.getId();
+        assertTrue(judokaService.findById(idDelJudoka).isPresent(), "El judoka debe existir.");
+
+        // Eliminamos el judoka a través del servicio
+        judokaService.eliminarJudoka(idDelJudoka);
+
+        // Assert
+        // Verificamos que al buscarlo de nuevo, ya no se encuentra
+        Optional<Judoka> judokaEliminadoOpt = judokaService.findById(idDelJudoka);
+        assertFalse(judokaEliminadoOpt.isPresent(), "El judoka no debería existir.");
+    }
+
+    @Test
     void testActualizarJudoka() {
-        // Arrange
-        // Usamos el judokaDePrueba que ya existe en la BD gracias al @BeforeEach
-        // Le actualizamos un dato
+        // Actualizamos un dato
         judokaDePrueba.aumentarVictoria(); // Ahora tiene 1 victoria
 
         // Act
@@ -76,22 +88,5 @@ class JudokaServiceIntegrationTest {
         // Assert
         assertTrue(judokaActualizadoOpt.isPresent());
         assertEquals(1, judokaActualizadoOpt.get().getVictorias(), "El número de victorias debería ser 1.");
-    }
-
-    @Test
-    void testEliminarJudoka() {
-        // Arrange
-        // El judokaDePrueba ya existe en la BD
-        Long idDelJudoka = judokaDePrueba.getId();
-        assertTrue(judokaService.findById(idDelJudoka).isPresent(), "El judoka debe existir antes de ser eliminado.");
-
-        // Act
-        // Eliminamos el judoka a través del servicio
-        judokaService.eliminarJudoka(idDelJudoka);
-
-        // Assert
-        // Verificamos que al buscarlo de nuevo, ya no se encuentra
-        Optional<Judoka> judokaEliminadoOpt = judokaService.findById(idDelJudoka);
-        assertFalse(judokaEliminadoOpt.isPresent(), "El judoka no debería existir después de ser eliminado.");
     }
 }

@@ -129,43 +129,38 @@ class ClubWebControllerTest {
 //        // 3. (Opcional pero muy bueno) Verifica que se añadió un mensaje de éxito al modelo
 //        verify(model).addAttribute(eq("success"), anyString());
 //    }
-
-    /**
-     * Prueba el registro de un club con datos válidos.   #####A##
-     */
     @Test
     void testDoRegistroClubExitoso() {
         when(clubService.findByUsername("club123@test.com")).thenReturn(Optional.empty());
 
-        String result = clubWebController.doRegistroClub("club123@test.com", "password123", "Club ABC", model);
+        String result = clubWebController.doRegistroClub("club123@test.com",
+                "password123", "Club ABC", model);
 
         assertEquals("Club/registro_club", result);
         verify(clubService).guardarClub(any(Club.class));
     }
 
-    /**
-     * Prueba el registro de un club con campos obligatorios vacíos.
-     */
     @Test
     void testDoRegistroClubSinUsername() {
-        String result = clubWebController.doRegistroClub("", "password123", "Club ABC", model);
+        String result = clubWebController.doRegistroClub("",
+                "password123", "Club ABC", model);
 
         assertEquals("Club/registro_club", result);
-        verify(model).addAttribute("error", "Todos los campos son obligatorios.");
+        verify(model).addAttribute("error",
+                "Todos los campos son obligatorios.");
         verify(clubService, never()).guardarClub(any(Club.class));
     }
 
-    /**
-     * Prueba el registro de un club cuando el nombre de usuario ya está registrado.
-     */
     @Test
     void testDoRegistroClubConUsernameYaRegistrado() {
         when(clubService.findByUsername("club123@test.com")).thenReturn(Optional.of(new Club()));
 
-        String result = clubWebController.doRegistroClub("club123@test.com", "password123", "Club ABC", model);
+        String result = clubWebController.doRegistroClub("club123@test.com",
+                "password123", "Club ABC", model);
 
         assertEquals("Club/registro_club", result);
-        verify(model).addAttribute("error", "El correo ya está registrado para un club.");
+        verify(model).addAttribute("error",
+                "El correo ya está registrado para un club.");
         verify(clubService, never()).guardarClub(any(Club.class));
     }
 }

@@ -20,7 +20,8 @@ class ClubTest {
         club.setDireccion("Av Alemania 1523");
         club.setHorarios("Lunes a Viernes, 18:00 - 20:00");
 
-        judoka = new Judoka(1L, "Benjamín", "Beroiza", "73kg", "2003-09-21");
+        judoka = new Judoka(1L, "Jigoro", "Kano",
+                "73kg", "1980-09-21");
     }
 
     @Test
