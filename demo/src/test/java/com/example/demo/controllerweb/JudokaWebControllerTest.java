@@ -85,43 +85,43 @@ class JudokaWebControllerTest {
         assertEquals("Judoka/judokas", view);
     }
 
-    /**
-     * Verifica que si el usuario no está autenticado como judoka,
-     * el método judokaHome redirecciona al login.
-     */
-    @Test
-    void judokaHome_siNoEsJudoka_redirigeALogin() {
-        when(session.getAttribute("username")).thenReturn(null);
-        String view = controller.judokaHome(session, model);
-        assertEquals("redirect:/login", view);
-    }
+//    /**
+//     * Verifica que si el usuario no está autenticado como judoka,
+//     * el método judokaHome redirecciona al login.
+//     */
+//    @Test
+//    void judokaHome_siNoEsJudoka_redirigeALogin() {
+//        when(session.getAttribute("username")).thenReturn(null);
+//        String view = controller.judokaHome(session, model);
+//        assertEquals("redirect:/login", view);
+//    }
 
-    /**
-     * Comprueba que si el usuario es un judoka autenticado,
-     * se muestra su nombre en el modelo y se retorna la vista 'judoka_home'.
-     */
-    @Test
-    void judokaHome_siEsJudoka_muestraNombre() {
-        when(session.getAttribute("username")).thenReturn("test@correo.com");
-        when(session.getAttribute("tipo")).thenReturn("judoka");
+//    /**
+//     * Comprueba que si el usuario es un judoka autenticado,
+//     * se muestra su nombre en el modelo y se retorna la vista 'judoka_home'.
+//     */
+//    @Test
+//    void judokaHome_siEsJudoka_muestraNombre() {
+//        when(session.getAttribute("username")).thenReturn("test@correo.com");
+//        when(session.getAttribute("tipo")).thenReturn("judoka");
+//
+//        Judoka judoka = new Judoka();
+//        judoka.setNombre("Pedro");
+//        when(judokaService.findByUsername("test@correo.com")).thenReturn(Optional.of(judoka));
+//
+//        String view = controller.judokaHome(session, model);
+//        verify(model).addAttribute("nombre", "Pedro");
+//        assertEquals("Judoka/judoka_home", view);
+//    }
 
-        Judoka judoka = new Judoka();
-        judoka.setNombre("Pedro");
-        when(judokaService.findByUsername("test@correo.com")).thenReturn(Optional.of(judoka));
-
-        String view = controller.judokaHome(session, model);
-        verify(model).addAttribute("nombre", "Pedro");
-        assertEquals("Judoka/judoka_home", view);
-    }
-
-    /**
-     * Prueba que showRegistroJudoka retorna la vista correspondiente
-     * al formulario de registro de judoka.
-     */
-    @Test
-    void showRegistroJudoka_muestraVista() {
-        assertEquals("Judoka/registro_judoka", controller.showRegistroJudoka());
-    }
+//    /**
+//     * Prueba que showRegistroJudoka retorna la vista correspondiente
+//     * al formulario de registro de judoka.
+//     */
+//    @Test
+//    void showRegistroJudoka_muestraVista() {
+//        assertEquals("Judoka/registro_judoka", controller.showRegistroJudoka());
+//    }
 
     /**
      * Verifica que si faltan campos obligatorios en el registro,

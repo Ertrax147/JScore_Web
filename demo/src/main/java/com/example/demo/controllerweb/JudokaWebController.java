@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PathVariable; // ¡NUEVA IMPORTAC
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional; // ¡NUEVA IMPORTACIÓN!
 import java.util.logging.Level;
@@ -44,19 +45,19 @@ public class JudokaWebController {
         return s.getAttribute("username") != null && "judoka".equals(s.getAttribute("tipo"));
     }
 
-    @GetMapping("/judoka/home")
-    public String judokaHome(HttpSession session, Model model) {
-        if (!esJudoka(session)) return "redirect:/login";
-        String username = (String) session.getAttribute("username");
-
-        Judoka judoka = judokaService.findByUsername(username).orElse(null);
-        if (judoka != null) {
-            model.addAttribute("nombre", judoka.getNombre());
-        } else {
-            model.addAttribute("nombre", username);
-        }
-        return "Judoka/judoka_home";
-    }
+//    @GetMapping("/judoka/home")
+//    public String judokaHome(HttpSession session, Model model) {
+//        if (!esJudoka(session)) return "redirect:/login";
+//        String username = (String) session.getAttribute("username");
+//
+//        Judoka judoka = judokaService.findByUsername(username).orElse(null);
+//        if (judoka != null) {
+//            model.addAttribute("nombre", judoka.getNombre());
+//        } else {
+//            model.addAttribute("nombre", username);
+//        }
+//        return "Judoka/judoka_home";
+//    }
 
     // --- NUEVO MÉTODO PARA VER EL PERFIL DEL JUDOKA ---
     @GetMapping("/judoka/perfil/{id}")
@@ -75,8 +76,22 @@ public class JudokaWebController {
     }
 
     @GetMapping("/registro-judoka")
-    public String showRegistroJudoka() {
-        return "Judoka/registro_judoka";
+    public String showRegistroJudoka(Model model) { // Añadimos el parámetro Model
+        // Creamos la lista de categorías de peso
+        List<String> categoriasDePeso = Arrays.asList(
+                "-60 kg",
+                "-66 kg",
+                "-73 kg",
+                "-81 kg",
+                "-90 kg",
+                "-100 kg",
+                "+100 kg"
+        );
+
+        // Añadimos la lista al modelo para que la vista pueda usarla
+        model.addAttribute("categorias", categoriasDePeso);
+
+        return "Judoka/registro_judoka"; // El nombre de tu vista
     }
 
     @PostMapping("/registro-judoka")

@@ -21,7 +21,7 @@ public class AuthController {
 
     @GetMapping("/")
     public String root() {
-        return "redirect:/login";
+        return "model/index";
     }
 
     @GetMapping("/login")
@@ -71,9 +71,9 @@ public class AuthController {
         session.setAttribute("tipo", tipo);
 
         if ("judoka".equals(tipo)) {
-            return "redirect:/judoka/home";
+            return "redirect:/"; // Redirige a la página principal
         } else {
-            return "redirect:/club/home";
+            return "redirect:/"; // También redirige a la página principal
         }
     }
 

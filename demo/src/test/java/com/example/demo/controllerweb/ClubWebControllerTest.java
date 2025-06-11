@@ -34,55 +34,55 @@ class ClubWebControllerTest {
         clubWebController = new ClubWebController(clubService);
     }
 
-    /**
-     * Prueba que el método clubHome redirija al inicio de sesión si no es un club válido.
-     */
-    @Test
-    void testClubHomeDireccionaAlLogin_siNoEsValidoElClub() {
-        when(session.getAttribute("username")).thenReturn(null);
-        when(session.getAttribute("tipo")).thenReturn(null);
+//    /**
+//     * Prueba que el método clubHome redirija al inicio de sesión si no es un club válido.
+//     */
+//    @Test
+//    void testClubHomeDireccionaAlLogin_siNoEsValidoElClub() {
+//        when(session.getAttribute("username")).thenReturn(null);
+//        when(session.getAttribute("tipo")).thenReturn(null);
+//
+//        String result = clubWebController.clubHome(session, model);
+//
+//        assertEquals("redirect:/login", result);
+//        verify(model, never()).addAttribute(anyString(), any());
+//    }
 
-        String result = clubWebController.clubHome(session, model);
+//    /**
+//     * Prueba que el método clubHome muestra el nombre del club correctamente cuando
+//     * un club válido está logueado.
+//     */
+//    @Test
+//    void testClubHomeMuestraElNombreDelClubParaUnLoginValido() {
+//        when(session.getAttribute("username")).thenReturn("club123");
+//        when(session.getAttribute("tipo")).thenReturn("club");
+//        Club club = new Club();
+//        club.setNombre("Club ABC");
+//
+//        when(clubService.findByUsername("club123")).thenReturn(Optional.of(club));
+//
+//        String result = clubWebController.clubHome(session, model);
+//
+//        assertEquals("Club/club_home", result);
+//        verify(model).addAttribute("nombre", "Club ABC");
+//    }
 
-        assertEquals("redirect:/login", result);
-        verify(model, never()).addAttribute(anyString(), any());
-    }
-
-    /**
-     * Prueba que el método clubHome muestra el nombre del club correctamente cuando
-     * un club válido está logueado.
-     */
-    @Test
-    void testClubHomeMuestraElNombreDelClubParaUnLoginValido() {
-        when(session.getAttribute("username")).thenReturn("club123");
-        when(session.getAttribute("tipo")).thenReturn("club");
-        Club club = new Club();
-        club.setNombre("Club ABC");
-
-        when(clubService.findByUsername("club123")).thenReturn(Optional.of(club));
-
-        String result = clubWebController.clubHome(session, model);
-
-        assertEquals("Club/club_home", result);
-        verify(model).addAttribute("nombre", "Club ABC");
-    }
-
-    /**
-     * Prueba que el método clubHome utiliza el nombre de usuario como fallback
-     * si no encuentra el club.
-     */
-    @Test
-    void TestClubHomeNombreUsuarioComoFallback() {
-        when(session.getAttribute("username")).thenReturn("club123");
-        when(session.getAttribute("tipo")).thenReturn("club");
-
-        when(clubService.findByUsername("club123")).thenReturn(Optional.empty());
-
-        String result = clubWebController.clubHome(session, model);
-
-        assertEquals("Club/club_home", result);
-        verify(model).addAttribute("nombre", "club123");
-    }
+//    /**
+//     * Prueba que el método clubHome utiliza el nombre de usuario como fallback
+//     * si no encuentra el club.
+//     */
+//    @Test
+//    void TestClubHomeNombreUsuarioComoFallback() {
+//        when(session.getAttribute("username")).thenReturn("club123");
+//        when(session.getAttribute("tipo")).thenReturn("club");
+//
+//        when(clubService.findByUsername("club123")).thenReturn(Optional.empty());
+//
+//        String result = clubWebController.clubHome(session, model);
+//
+//        assertEquals("Club/club_home", result);
+//        verify(model).addAttribute("nombre", "club123");
+//    }
 
     /**
      * Prueba que el método listarClubes carga una lista de clubes y muestra la vista correcta.

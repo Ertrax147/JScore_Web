@@ -16,20 +16,20 @@ public class ClubWebController {
 
     private final ClubService clubService;
 
-    @GetMapping("/club/home")
-    public String clubHome(HttpSession session, Model model) {
-        if (!esClub(session)) {
-            return "redirect:/login";
-        }
-        String username = (String) session.getAttribute("username");
-        Club club = clubService.findByUsername(username).orElse(null);
-        if (club != null) {
-            model.addAttribute("nombre", club.getNombre());
-        } else {
-            model.addAttribute("nombre", username);
-        }
-        return "Club/club_home";
-    }
+//    @GetMapping("/club/home")
+//    public String clubHome(HttpSession session, Model model) {
+//        if (!esClub(session)) {
+//            return "redirect:/login";
+//        }
+//        String username = (String) session.getAttribute("username");
+//        Club club = clubService.findByUsername(username).orElse(null);
+//        if (club != null) {
+//            model.addAttribute("nombre", club.getNombre());
+//        } else {
+//            model.addAttribute("nombre", username);
+//        }
+//        return "Club/club_home";
+//    }
 
     @GetMapping("/lista")
     public String listarClubes(Model model) {
