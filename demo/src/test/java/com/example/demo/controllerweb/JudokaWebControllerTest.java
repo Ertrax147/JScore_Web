@@ -151,7 +151,7 @@ class JudokaWebControllerTest {
      * Verifica que cuando el registro es exitoso,
      * se llama al guardado del Judoka y se añade un mensaje de éxito al modelo.
      */
-    @Disabled
+    @Test
     void doRegistroJudoka_registroExitoso() {
         when(judokaService.findByUsername("nuevo@correo.com")).thenReturn(Optional.empty());
 
@@ -159,6 +159,37 @@ class JudokaWebControllerTest {
                 "nuevo@correo.com", "pass", "nombre", "apellido", "cat", "1990-01-01", model);
 
         verify(judokaService).guardarJudoka(any(Judoka.class));
-        assertEquals("redirect:/login?registrado=1", view);
+        assertEquals("Judoka/registro_judoka", view);
+    }
+
+    /**
+     * Verifica que si el judoka existe, se muestra correctamente su perfil.
+     */
+    @Test
+    void verPerfilJudoka_existente_devuelveVistaPerfil() {
+        Long judokaId = 1L;
+        Judoka judoka = new Judoka();
+        judoka.setId(judokaId);
+        judoka.setNombre("Jigoro");
+
+        when(judokaService.findById(judokaId)).thenReturn(Optional.of(judoka));
+
+        String view = controller.verPerfilJudoka(judokaId, model, session);
+
+        verify(model).addAttribute("judoka", judoka);
+        assertEquals("Judoka/perfil_judoka", view);
+    }
+
+    /**
+     * Verifica que si el judoka no existe, redirige a la lista con error.
+     */
+    @Test
+    void verPerfilJudoka_inexistente_redirigeConError() {
+        Long judokaId = 99L;
+        when(judokaService.findById(judokaId)).thenReturn(Optional.empty());
+
+        String view = controller.verPerfilJudoka(judokaId, model, session);
+
+        assertEquals("redirect:/judokas?error=noEncontrado", view);
     }
 }

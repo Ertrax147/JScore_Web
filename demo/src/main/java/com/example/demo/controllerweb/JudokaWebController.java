@@ -61,11 +61,6 @@ public class JudokaWebController {
     // --- NUEVO MÉTODO PARA VER EL PERFIL DEL JUDOKA ---
     @GetMapping("/judoka/perfil/{id}")
     public String verPerfilJudoka(@PathVariable("id") Long id, Model model, HttpSession session) {
-        // Opcional: Verificar si el usuario está logueado si es necesario para ver perfiles
-        // String currentUserType = (String) session.getAttribute("tipo");
-        // if (session.getAttribute("username") == null) {
-        //     return "redirect:/login";
-        // }
 
         Optional<Judoka> judokaOpt = judokaService.findById(id); // Asume que tienes judokaService.findById(id)
 
@@ -78,7 +73,6 @@ public class JudokaWebController {
             return "redirect:/judokas?error=noEncontrado";
         }
     }
-    // --- FIN DEL NUEVO MÉTODO --
 
     @GetMapping("/registro-judoka")
     public String showRegistroJudoka() {

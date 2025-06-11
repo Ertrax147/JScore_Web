@@ -1,15 +1,46 @@
 package com.example.demo.model.user;
 
 // Tipo: Prueba Unitaria
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Prueba unitaria para la clase Judoka.
  * No requiere el contexto de Spring, ya que prueba lógica pura del modelo.
  */
 public class JudokaTest {
+
+    private Judoka atleta;
+
+    @BeforeEach
+    void setUp() {
+        atleta = new Judoka(1, "Jigoro", "Kano", "66kg", "2004-05-12");
+    }
+
+    @Test
+    void testAumentarVictoria() {
+        atleta.aumentarVictoria();
+        assertEquals(1, atleta.getVictorias());
+    }
+
+    @Test
+    void testAumentarDerrota() {
+        atleta.aumentarDerrota();
+        assertEquals(1, atleta.getDerrotas());
+    }
+
+    @Test
+    void testMostrarInformacion() {
+        atleta.aumentarVictoria();
+        String info = atleta.mostrarInformacion();
+        assertTrue(info.contains("Nombre: Jigoro Kano"));
+        assertTrue(info.contains("Categoria: 66kg"));
+        assertTrue(info.contains("Victorias: 1"));
+        assertTrue(info.contains("% Victorias: 100.00"));
+    }
 
     @Test
     void testCalcularPorcentajeVictorias_ConDatosMezclados() {
