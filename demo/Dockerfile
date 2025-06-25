@@ -11,7 +11,7 @@ RUN mvn dependency:go-offline
 
 # Copiamos el resto del código fuente y construimos el proyecto
 COPY src ./src
-RUN mvn package -DskipTests
+RUN mvn package -Dmaven.test.skip=true
 
 # Etapa 2: Ejecución
 # Usamos una imagen ligera de Java 17 para ejecutar la aplicación
