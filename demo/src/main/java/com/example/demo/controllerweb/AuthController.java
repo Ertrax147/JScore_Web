@@ -1,5 +1,9 @@
 package com.example.demo.controllerweb;
 
+import com.example.demo.model.user.Club;
+import com.example.demo.model.user.Judoka;
+import com.example.demo.service.ClubService;
+import com.example.demo.service.JudokaService;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import com.example.demo.service.auth.AuthenticationService;
@@ -7,11 +11,17 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Optional;
+
 @RequiredArgsConstructor
 @Controller
 public class AuthController {
 
-    private final AuthenticationService authenticationService;
+    // MODIFICADO: Inyectamos los servicios para buscar los datos del usuario.
+    private final JudokaService judokaService;
+    private final ClubService clubService;
+
+    // MODIFICADO: Se eliminó la dependencia a AuthenticationService que ya no es necesaria aquí.
     private static final String DIRIGIR_JUDOKA_HOME = "redirect:/judoka/home";
     private static final String DIRIGIR_LOGIN = "Model/login";
     private static final String JUDOKA = "judoka";
@@ -28,10 +38,9 @@ public class AuthController {
     }
 
     @GetMapping("/login")
-    public String showLogin(HttpSession session) {
-        if (isUsuarioLogueado(session)) {
-            return destinoSegunTipoUsuario(session);
-        }
+    public String showLogin() {
+        // La lógica de redirección si ya está logueado se puede simplificar o manejar en un filtro.
+        // Por ahora la dejamos así, pero el CustomAuthenticationSuccessHandler previene el re-login.
         return DIRIGIR_LOGIN;
     }
 
@@ -49,35 +58,9 @@ public class AuthController {
         return DIRIGIR_LOGIN;
     }
 
-    @PostMapping("/login")
-    public String doLogin(
-            @RequestParam("username") String username,
-            @RequestParam("password") String password,
-            @RequestParam("tipo") String tipo,
-            Model model,
-            HttpSession session
-    ) {
-        String error = validarLogin(username, password, tipo);
-        if (error != null) {
-            model.addAttribute(ERROR, error);
-            return DIRIGIR_LOGIN;
-        }
+    // MODIFICADO: Se eliminó por completo el método doLogin (@PostMapping). Spring Security ahora lo maneja.
 
-        session.setAttribute("username", username);
-        session.setAttribute("tipo", tipo);
 
-        return JUDOKA.equalsIgnoreCase(tipo) ? DIRIGIR_JUDOKA_HOME : "redirect:/club/home";
-    }
-
-    private String validarLogin(String username, String password, String tipo) {
-        String mensajeValidacion = validarCamposObligatorios(username, password);
-        if (mensajeValidacion != null) return mensajeValidacion;
-
-        mensajeValidacion = validarTipoUsuario(tipo);
-        if (mensajeValidacion != null) return mensajeValidacion;
-
-        return validarCredenciales(username, password, tipo);
-    }
 
     private String validarCamposObligatorios(String username, String password) {
         if (username == null || username.isEmpty()) {
@@ -89,24 +72,10 @@ public class AuthController {
         return null;
     }
 
-    private String validarTipoUsuario(String tipo) {
-        if (!authenticationService.tipoValido(tipo)) {
-            return "Tipo inválido";
-        }
-        return null;
-    }
-
-    private String validarCredenciales(String username, String password, String tipo) {
-        if (!authenticationService.authenticate(tipo, username, password)) {
-            return "Usuario o contraseña incorrectos";
-        }
-        return null;
-    }
-
     @GetMapping("/logout")
     public String logout(HttpSession session) {
         session.invalidate();
-        return "redirect:/login";
+        return "redirect:/login?logout";
     }
 
     @GetMapping("/registro")
@@ -117,14 +86,30 @@ public class AuthController {
     // Nuevo método para redirigir a la vista de perfil correspondiente
 
     @GetMapping("/perfil")
-    public String verPerfil(HttpSession session) {
-        if (session.getAttribute("tipo") == null) return "redirect:/login";
+    public String verPerfil(HttpSession session, Model model) {
+        String username = (String) session.getAttribute("username");
         String tipo = (String) session.getAttribute("tipo");
-        if ("judoka".equalsIgnoreCase(tipo)) {
-            return "Judoka/Perfil_Judoka";
-        } else if ("club".equalsIgnoreCase(tipo)) {
-            return "Club/Perfil_Club";
+
+        if (username == null) {
+            return "redirect:/login";
         }
-        return "redirect:/login";
+
+        if ("judoka".equalsIgnoreCase(tipo)) {
+            Optional<Judoka> judokaOpt = judokaService.findByUsername(username);
+            if (judokaOpt.isPresent()) {
+                model.addAttribute("judoka", judokaOpt.get());
+                return "Judoka/Perfil_Judoka";
+            }
+        } else if ("club".equalsIgnoreCase(tipo)) {
+            Optional<Club> clubOpt = clubService.findByUsernameWithJudokas(username);
+            if (clubOpt.isPresent()) {
+                model.addAttribute("club", clubOpt.get());
+                return "Club/Perfil_Club";
+            }
+        }
+
+        session.invalidate();
+        return "redirect:/login?error=user_not_found";
     }
+
 }

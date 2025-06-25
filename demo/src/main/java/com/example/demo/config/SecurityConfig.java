@@ -19,22 +19,33 @@ import org.springframework.security.web.SecurityFilterChain;
 public class SecurityConfig {
 
     private final UserService userService;
+    private final CustomAuthenticationSuccessHandler successHandler; // MODIFICADO: Inyectamos nuestro nuevo manejador.
+
 
     // Configuración de seguridad para la aplicación, aquí se definen las reglas de acceso a las rutas
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/club/**").hasRole("CLUB")           // Rutas para Club
-                        .requestMatchers("/judoka/**").hasRole("JUDOKA")       // Rutas para Judoka
+                        // Se reordenan y especifican las reglas de seguridad.
+                        // 1. Rutas públicas que no requieren autenticación.
                         .requestMatchers("/", "/login", "/registro", "/css/**", "/js/**",
-                                "/recuperar/**", "/restablecer/**", "registro-judoka", "registro-club")  // Permitir acceso público a estas rutas
-                        .permitAll()  // Estas rutas son accesibles sin autenticación
-                        .anyRequest().authenticated()  // El resto requiere autenticación
+                                "/recuperar/**", "/restablecer/**", "/registro-judoka", "/registro-club").permitAll()
+
+                        // 2. Rutas que puede ver cualquier usuario que haya iniciado sesión (sea Judoka o Club).
+                        .requestMatchers("/lista", "/judokas", "/club/publico/**").authenticated()
+
+                        // 3. Rutas específicas para cada rol. La regla más específica de "/club/publico/**" ya fue procesada.
+                        //    Esta regla ahora se aplica al resto de URLs bajo /club/, como editar horarios, etc.
+                        .requestMatchers("/club/**").hasRole("CLUB")
+                        .requestMatchers("/judoka/**").hasRole("JUDOKA")
+
+                        // 4. Cualquier otra petición que no coincida con las anteriores, requiere autenticación.
+                        .anyRequest().authenticated()
                 )
                 .formLogin(form -> form
                         .loginPage("/login")
-                        .defaultSuccessUrl("/", true)
+                        .successHandler(successHandler)
                         .failureUrl("/login?error=true")
                         .permitAll()
                 )
