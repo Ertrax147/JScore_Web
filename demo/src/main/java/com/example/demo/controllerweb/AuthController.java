@@ -115,6 +115,7 @@ public class AuthController {
     }
 
     // Nuevo método para redirigir a la vista de perfil correspondiente
+
     @GetMapping("/perfil")
     public String verPerfil(HttpSession session) {
         if (session.getAttribute("tipo") == null) return "redirect:/login";

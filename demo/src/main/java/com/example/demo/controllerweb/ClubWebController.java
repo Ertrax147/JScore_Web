@@ -4,13 +4,13 @@ import jakarta.servlet.http.HttpSession;
 import lombok.AllArgsConstructor;
 import com.example.demo.model.user.Club;
 import com.example.demo.service.ClubService;
-import com.example.demo.dto.ClubRegistroDTO;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import jakarta.validation.Valid;
 import org.springframework.validation.BindingResult;
+import com.example.demo.dto.ClubRegistroDTO;
 
 @AllArgsConstructor
 @Controller
