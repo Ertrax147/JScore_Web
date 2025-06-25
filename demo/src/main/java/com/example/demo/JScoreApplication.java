@@ -3,11 +3,19 @@ package com.example.demo;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+/**
+ * The type Judo application.
+ */
 @SpringBootApplication
-public class JudoApplication {
+class JScoreApplication {
 
+	/**
+	 * The entry point of application.
+	 *
+	 * @param args the input arguments
+	 */
 	public static void main(String[] args) {
-		SpringApplication.run(JudoApplication.class, args);
+		SpringApplication.run(JScoreApplication.class, args);
 	}
 
 }
