@@ -33,7 +33,7 @@ public class PasswordResetController {
         try {
             judokaService.crearToken(username);
             model.addAttribute(MENSAJE, "Se envió el enlace al correo registrado (si existe).");
-        } catch (RuntimeException _) {
+        } catch (RuntimeException) {
             // No reveles si el usuario existe o no por seguridad
             model.addAttribute(MENSAJE, "Se envió el enlace al correo registrado (si existe).");
         }
