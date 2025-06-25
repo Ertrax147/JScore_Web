@@ -1,6 +1,5 @@
 package com.example.demo.service;
 
-
 import com.example.demo.model.competencia.Torneo;
 import com.example.demo.repository.TorneoRepository;
 import org.springframework.stereotype.Service;

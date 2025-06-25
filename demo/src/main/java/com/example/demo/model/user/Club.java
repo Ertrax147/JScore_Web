@@ -1,4 +1,5 @@
 package com.example.demo.model.user;
+
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -21,14 +22,14 @@ public class Club {
     private String horarios;
 
     @OneToMany(mappedBy = "club", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Judoka> judokas = new ArrayList<>();
+    private List<com.example.demo.model.user.Judoka> judokas = new ArrayList<>();
 
     /**
      * Agregar un judoka al club.
      *
      * @param judoka el judoka a agregar
      */
-    public void agregarJudoka(Judoka judoka) {
+    public void agregarJudoka(com.example.demo.model.user.Judoka judoka) {
         judokas.add(judoka);
         judoka.setClub(this);
     }
@@ -38,7 +39,7 @@ public class Club {
      *
      * @param judoka el judoka a eliminar
      */
-    public void eliminarJudoka(Judoka judoka) {
+    public void eliminarJudoka(com.example.demo.model.user.Judoka judoka) {
         judokas.remove(judoka);
         judoka.setClub(null);
     }

@@ -1,11 +1,10 @@
 package com.example.demo.controllerweb;
 
-
 import com.example.demo.model.competencia.Torneo;
-import com.example.demo.model.logger.LoggerManager;
 import com.example.demo.model.user.Judoka;
-import com.example.demo.service.JudokaService;
+import com.example.demo.model.logger.LoggerManager;
 import com.example.demo.service.TorneoService;
+import com.example.demo.service.JudokaService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;

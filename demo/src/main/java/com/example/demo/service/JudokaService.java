@@ -1,9 +1,9 @@
 package com.example.demo.service;
 
-
 import lombok.AllArgsConstructor;
 import com.example.demo.model.user.Judoka;
 import com.example.demo.repository.JudokaRepository;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,6 +17,7 @@ import java.util.Optional;
 public class JudokaService {
 
     private final JudokaRepository judokaRepository;
+    private final PasswordEncoder passwordEncoder;
 
     /**
      * Listar judokas list.
@@ -28,42 +29,15 @@ public class JudokaService {
     }
 
     /**
-     * Buscar por id optional.
-     *
-     * @param id the id
-     * @return the optional
-     */
-    public Optional<Judoka> buscarPorId(Long id) {
-        return judokaRepository.findById(id);
-    }
-
-    /**
-     * Buscar por nombre list.
-     *
-     * @param nombre the nombre
-     * @return the list
-     */
-    public List<Judoka> buscarPorNombre(String nombre) {
-        return judokaRepository.findByNombre(nombre);
-    }
-
-    /**
      * Guardarjudoka judoka.
      *
      * @param judoka the judoka
-     * @return the judoka
      */
-    public Judoka guardarJudoka(Judoka judoka) {
-        return judokaRepository.save(judoka);
-    }
-
-    /**
-     * Eliminar judoka.
-     *
-     * @param id the id
-     */
-    public void eliminarJudoka(Long id) {
-        judokaRepository.deleteById(id);
+    public void guardarJudoka(Judoka judoka) {
+        if (!judoka.getPassword().startsWith("$2a") && !judoka.getPassword().startsWith("$2b")) {
+            judoka.setPassword(passwordEncoder.encode(judoka.getPassword()));
+        }
+        judokaRepository.save(judoka);
     }
 
     public Optional<Judoka> findByUsername(String username) {
@@ -72,11 +46,7 @@ public class JudokaService {
 
     public boolean validarContrasena(String username, String password) {
         Optional<Judoka> opt = findByUsername(username);
-        return opt.isPresent() && opt.get().getPassword().equals(password);
-    }
-
-    public Optional<Judoka> findById(Long id) {
-        return judokaRepository.findById(id); //
+        return opt.map(j -> passwordEncoder.matches(password, j.getPassword())).orElse(false);
     }
 
     /**

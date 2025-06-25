@@ -30,6 +30,7 @@ public class Judoka {
     private Club club;
 
 
+
     /**
      * Instantiates a new Judoka.
      *
@@ -39,7 +40,7 @@ public class Judoka {
      * @param categoria       the categoria
      * @param fechaNacimiento the fecha nacimiento
      */
-    public Judoka(long id, String nombre, String apellido, String categoria, String fechaNacimiento) {
+    public Judoka(long id,String nombre, String apellido, String categoria, String fechaNacimiento) {
         this.id = id;
         this.nombre = nombre;
         this.apellido = apellido;
@@ -50,23 +51,17 @@ public class Judoka {
     /**
      * Aumentar victoria.
      */
-    public void aumentarVictoria() {
-        victorias++;
-    }
+    public void aumentarVictoria() { victorias++; }
 
     /**
      * Aumentar derrota.
      */
-    public void aumentarDerrota() {
-        derrotas++;
-    }
+    public void aumentarDerrota() { derrotas++; }
 
     /**
      * Aumentar empate.
      */
-    public void aumentarEmpate() {
-        empates++;
-    }
+    public void aumentarEmpate() { empates++; }
 
     /**
      * Calcular porcentaje victorias double.
